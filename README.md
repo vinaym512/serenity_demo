@@ -1,7 +1,3 @@
-Certainly! Installing Maven dependencies is an essential part of setting up a Java project with Maven. When you run Maven commands such as `mvn clean install` or `mvn verify`, Maven will automatically download the necessary dependencies specified in your `pom.xml` file from the Maven Central Repository or other specified repositories.
-
-Here's an updated README that includes a section on installing Maven dependencies:
-
 # Serenity Maven Project README
 
 ## Project Overview
