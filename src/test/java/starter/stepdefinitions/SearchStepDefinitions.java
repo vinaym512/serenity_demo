@@ -39,7 +39,7 @@ public class SearchStepDefinitions {
 
     @When("^(?:.*) should see flights results page with \"(.*)\"")
     public void should_see_next_page(String term) {
-        search.assertForBestFlight(term);
+        search.assertForBestFlightAndBooking(term);
 
     }
 

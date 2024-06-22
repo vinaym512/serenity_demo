@@ -7,11 +7,9 @@ import starter.pageobjects.FlightHomepage;
 import starter.pageobjects.SelectFlightpage;
 
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.junit.Assert;
-import static org.junit.Assert.fail;
 
 public class SearchSteps extends UIInteractionSteps {
     
@@ -24,8 +22,8 @@ public class SearchSteps extends UIInteractionSteps {
         find(FlightHomepage.SEARCH_BOX_TO).sendKeys(dest);
         find(FlightHomepage.SEARCH_BOX_TO_SELECT_1ST).click();
 
-        waitABit(500);
         find(FlightHomepage.DEPART_DATE).click();
+        waitABit(500);
         waitABit(500);
         find(FlightHomepage.get_date_picker_date(departDate)).click();
         waitABit(500);
@@ -40,34 +38,26 @@ public class SearchSteps extends UIInteractionSteps {
     }
 
     @Step("User should see flights results page with '{0}'")
-    public void assertForBestFlight(String term) {
+    public void assertForBestFlightAndBooking(String term) {
         final Pattern pattern;
         
         if(term.toLowerCase().contains("departing flights")){
-            waitFor("//h3[contains(text(), 'departing flights')]");
+            waitFor(SelectFlightpage.BEST_DEPART_FLIGHT);
             pattern = Pattern.compile("(Best|Top) departing flights");
         } else {
             if(term.toLowerCase().contains("returning flights")) {
-                waitFor("//h3[contains(text(), 'returning flights')]");
+                waitFor(SelectFlightpage.BEST_RETURN_FLIGHT);
                 pattern = Pattern.compile("(Best returning|Returning) flights");
             } else {
-                waitFor("//h2[text()='Booking options']");
+                waitFor(SelectFlightpage.BEST_BOOKING_OPTION);
                 pattern = Pattern.compile("Booking options");
             }
         }
-        List<String> headings = findAll(SelectFlightpage.SUB_HEADER).texts();
 
-        boolean flag_pass = false;
-        for (String heading : headings){
-            Matcher m = pattern.matcher(heading);
-            if (m.matches()){
-                flag_pass = true;
-                break;
-            }
-        }
-        if(flag_pass == false){
-            fail("*****Failed for pattern***** "+pattern);
-        } 
+        // Verify if the page with section - Best Depart/Return/Booking flight exist
+        List<String> headings = findAll(SelectFlightpage.SUB_HEADER).texts();
+        
+        Assert.assertTrue(String.format("%s not found", pattern), headings.stream().anyMatch(heading -> pattern.matcher(heading).matches()));
 
     }
 
